@@ -1,0 +1,57 @@
+[INS]
+Generate top level function documentation summarizing the js code
+[/INS]
+
+[INPUT]
+function nextPermute(elements) {
+    const n = elements.length;
+    if (n === 0) {
+        return { found: true, permutation: [] };
+    }
+
+    const copied = [...elements];
+
+    // Step 1
+    let k = n - 2;
+    while (k >= 0 && copied[k] >= copied[k + 1]) {
+        k--;
+    }
+
+    if (k < 0) {
+        return { found: false, permutation: copied };
+    }
+
+    // Step 2
+    let l = n - 1;
+    while (l >= 0 && copied[k] >= copied[l]) {
+        l--;
+    }
+
+    [copied[k], copied[l]] = [copied[l], copied[k]];
+
+    // Step 3
+    const reversedPart = copied.slice(k + 1).reverse();
+    const nextPermutation = [...copied.slice(0, k + 1), ...reversedPart];
+
+    return { found: true, permutation: nextPermutation };
+}
+[/INPUT]
+
+[RESPONSE]
+/**
+ * Generates the next lexicographical permutation of the provided elements.
+ * @param {Array} elements - An array of elements that can be compared.
+ * @returns {Object} An object containing:
+ *   - {boolean} found - Indicates whether the next permutation was found.
+ *   - {Array} permutation - The array containing the next permutation. 
+ *                           If no further permutation exists, the original array is returned in sorted order.
+ * @example
+ * const elements = [1, 2, 3];
+ * const { found, permutation } = nextPermute(elements);
+ * if (found) {
+ *     console.log(permutation); // Output: [1, 3, 2]
+ * } else {
+ *     console.log("No next permutation exists.");
+ * }
+ */
+ [/RESPONSE]

@@ -1,0 +1,37 @@
+[
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func Add(a int, b int) int {\n    return a + b\n}",
+        "output": "// Add adds two integers and returns the result.\n// Parameters:\n// - a: the first integer\n// - b: the second integer\n//\n// Returns:\n// - int: The sum of a and b\n//\n// Example:\n//     result := Add(3, 5)"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func IsEven(n int) bool {\n    return n%2 == 0\n}",
+        "output": "// IsEven checks if a number is even.\n// Parameters:\n// - n: the number to check\n//\n// Returns:\n// - bool: true if the number is even, false otherwise\n//\n// Example:\n//     isEven := IsEven(4) // true"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func FindMax(numbers []int) int {\n    max := numbers[0]\n    for _, num := range numbers {\n        if num > max {\n            max = num\n        }\n    }\n    return max\n}",
+        "output": "// FindMax finds the maximum number in a slice.\n// Parameters:\n// - numbers: a slice of integers\n//\n// Returns:\n// - int: The maximum number found\n//\n// Example:\n//     max := FindMax([]int{1, 2, 3, 4})"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func Factorial(n int) int {\n    if n < 0 {\n        panic(\"factorial not defined for negative numbers\")\n    }\n    if n == 0 {\n        return 1\n    }\n    result := 1\n    for i := 2; i <= n; i++ {\n        result *= i\n    }\n    return result\n}",
+        "output": "// Factorial calculates the factorial of a number.\n// Parameters:\n// - n: the number to calculate the factorial for\n//\n// Returns:\n// - int: The factorial of the number\n//\n// Example:\n//     result := Factorial(5)"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func MatrixMultiply(matrixA [][]int, matrixB [][]int) [][]int {\n    rowsA := len(matrixA)\n    colsA := len(matrixA[0])\n    rowsB := len(matrixB)\n    colsB := len(matrixB[0])\n    \n    if colsA != rowsB {\n        panic(\"incompatible matrix dimensions\")\n    }\n    \n    result := make([][]int, rowsA)\n    for i := range result {\n        result[i] = make([]int, colsB)\n    }\n    \n    for i := 0; i < rowsA; i++ {\n        for j := 0; j < colsB; j++ {\n            for k := 0; k < colsA; k++ {\n                result[i][j] += matrixA[i][k] * matrixB[k][j]\n            }\n        }\n    }\n    return result\n}",
+        "output": "// MatrixMultiply performs matrix multiplication.\n// Parameters:\n// - matrixA: the first matrix\n// - matrixB: the second matrix\n//\n// Returns:\n// - [][]int: The product of the two matrices\n//\n// Example:\n//     result := MatrixMultiply([][]int{{1, 2}, {3, 4}}, [][]int{{5, 6}, {7, 8}})"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func ConcurrentFetchData(urls []string) ([]Data, error) {\n    var wg sync.WaitGroup\n    dataChannel := make(chan Data)\n    errorChannel := make(chan error)\n\n    for _, url := range urls {\n        wg.Add(1)\n        go func(u string) {\n            defer wg.Done()\n            // Simulating data fetching\n            // data, err := fetchFromAPI(u)\n            // if err != nil {\n            //     errorChannel <- err\n            //     return\n            // }\n            dataChannel <- Data{} // Placeholder for actual data\n        }(url)\n    }\n\n    go func() {\n        wg.Wait()\n        close(dataChannel)\n    }()\n\n    var results []Data\n    for data := range dataChannel {\n        results = append(results, data)\n    }\n    return results, nil // Placeholder for actual error handling\n}",
+        "output": "// ConcurrentFetchData fetches data from multiple APIs concurrently.\n// Parameters:\n// - urls: a slice of API endpoints to fetch data from\n//\n// Returns:\n// - []Data: A slice containing data fetched from the APIs\n// - error: An error if any of the fetches fail\n//\n// Example:\n//     data, err := ConcurrentFetchData([]string{\"https://api1.com\", \"https://api2.com\"})"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func SortByField(items []Item, field string) []Item {\n    // Implement sorting logic based on field name\n    return items // Placeholder for actual sorting logic\n}",
+        "output": "// SortByField sorts a slice of structs by a specified field.\n// Parameters:\n// - items: the slice of structs to sort\n// - field: the field name to sort by\n//\n// Returns:\n// - []Item: The sorted slice\n//\n// Example:\n//     sortedItems := SortByField(items, \"Name\")"
+    }
+]

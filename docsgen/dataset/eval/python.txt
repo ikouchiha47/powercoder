@@ -1,0 +1,54 @@
+[INS]
+Generate top level function documentation summarizing the python code
+[/INS]
+
+[INPUT]
+def next_permute(elements):
+    n = len(elements)
+    if n == 0:
+        return True, []
+
+    copied = elements[:]
+
+    # Step 1
+    k = n - 2
+    while k >= 0 and copied[k] >= copied[k + 1]:
+        k -= 1
+
+    if k < 0:
+        return False, copied
+
+    # Step 2
+    l = n - 1
+    while l >= 0 and copied[k] >= copied[l]:
+        l -= 1
+
+    copied[k], copied[l] = copied[l], copied[k]
+
+    # Step 3
+    copied = copied[:k + 1] + copied[k + 1:][::-1]
+
+    return True, copied[/INPUT]
+
+[RESPONSE]
+"""Generates the next lexicographical permutation of the provided elements.
+    
+    Args:
+        elements (list): A list of elements that can be compared.
+        
+    Returns:
+        tuple: A tuple containing:
+            - bool: Indicates whether the next permutation was found.
+            - list: The list containing the next permutation. 
+                    If no further permutation exists, the original list is returned in sorted order.
+    
+    Example:
+        >>> elements = [1, 2, 3]
+        >>> found, permutation = next_permute(elements)
+        >>> if found:
+        ...     print(permutation)  # Output: [1, 3, 2]
+        ... else:
+        ...     print("No next permutation exists.")
+    """
+[/RESPONSE]
+

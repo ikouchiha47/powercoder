@@ -1,0 +1,263 @@
+[INS]
+Generate top level function documentation summarizing the python code
+[/INS]
+
+[INPUT]
+
+def add_numbers(a: int, b: int) -> int:
+    return a+b
+[/INPUT]
+
+[RESPONSE]
+"""
+    Adds two integers and returns the result.
+    
+    Args:
+        a (int): The first integer.
+        b (int): The second integer.
+        
+    Returns:
+        int: The sum of a and b.
+        
+    Example:
+        >>> add_numbers(3, 5)
+        8
+    """
+[/RESPONSE]
+
+[INPUT]
+def add(a, b):
+    return a + b
+
+[/INPUT]
+
+[RESPONSE]
+"""Adds two numbers together.
+    
+    Args:
+        a (int): The first number.
+        b (int): The second number.
+        
+    Returns:
+        int: The sum of the two numbers.
+        
+    Example:
+        >>> add(3, 5)
+        8
+    """
+
+[/RESPONSE]
+
+[INPUT]
+def is_even(n):
+    return n % 2 == 0
+[/INPUT]
+
+[RESPONSE]
+"""Checks if a number is even.
+    
+    Args:
+        n (int): The number to check.
+        
+    Returns:
+        bool: True if the number is even, False otherwise.
+        
+    Example:
+        >>> is_even(4)
+        True
+    """
+
+[/RESPONSE]
+
+
+[INPUT]
+def find_max(numbers):
+    return max(numbers)
+
+
+[/INPUT]
+
+[RESPONSE]
+"""Finds the maximum number in a list.
+    
+    Args:
+        numbers (list): A list of numbers.
+        
+    Returns:
+        int: The maximum number found.
+        
+    Example:
+        >>> find_max([1, 2, 3, 4])
+        4
+    """
+
+[/RESPONSE]
+
+
+[INPUT]
+def merge_lists(list1, list2):
+    return list1 + list2
+
+[/INPUT]
+
+[RESPONSE]
+"""Merges two lists.
+    
+    Args:
+        list1 (list): The first list.
+        list2 (list): The second list.
+        
+    Returns:
+        list: A new list containing elements from both lists.
+        
+    Example:
+        >>> merge_lists([1, 2], [3, 4])
+        [1, 2, 3, 4]
+    """
+
+[/RESPONSE]
+
+[INPUT]
+def factorial(n):
+    if n < 0:
+        raise ValueError("Factorial not defined for negative numbers")
+    if n == 0:
+        return 1
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
+    return result
+
+
+[/INPUT]
+
+[RESPONSE]
+"""Calculates the factorial of a number.
+    
+    Args:
+        n (int): The number to calculate the factorial for.
+        
+    Returns:
+        int: The factorial of the number.
+        
+    Example:
+        >>> factorial(5)
+        120
+    """
+
+[/RESPONSE]
+
+[INPUT]
+def bubble_sort(array):
+    n = len(array)
+    for i in range(n):
+        for j in range(0, n - i - 1):
+            if array[j] > array[j + 1]:
+                array[j], array[j + 1] = array[j + 1], array[j]
+    return array
+
+
+[/INPUT]
+
+[RESPONSE]
+"""Implements a simple bubble sort algorithm.
+    
+    Args:
+        array (list): The list to be sorted.
+        
+    Returns:
+        list: The sorted list.
+        
+    Example:
+        >>> bubble_sort([5, 2, 9, 1])
+        [1, 2, 5, 9]
+    """
+
+[/RESPONSE]
+
+
+[INPUT]
+def matrix_multiply(matrixA, matrixB):
+    rowsA = len(matrixA)
+    colsA = len(matrixA[0])
+    rowsB = len(matrixB)
+    colsB = len(matrixB[0])
+    
+    if colsA != rowsB:
+        raise ValueError("Incompatible matrix dimensions")
+    
+    result = [[0] * colsB for _ in range(rowsA)]
+    for i in range(rowsA):
+        for j in range(colsB):
+            for k in range(colsA):
+                result[i][j] += matrixA[i][k] * matrixB[k][j]
+    return result
+
+
+[/INPUT]
+
+[RESPONSE]
+"""Performs matrix multiplication.
+    
+    Args:
+        matrixA (list of list): The first matrix.
+        matrixB (list of list): The second matrix.
+        
+    Returns:
+        list of list: The product of the two matrices.
+        
+    Example:
+        >>> result = matrix_multiply([[1, 2], [3, 4]], [[5, 6], [7, 8]])
+        >>> result
+        [[19, 22], [43, 50]]
+    """
+
+[/RESPONSE]
+
+
+[INPUT]
+def time_it(func): 
+    @wraps(func)
+    async def wrapper(*args, **kwargs):
+        start_time = time.time()
+        result = await func(*args, **kwargs)
+        end_time = time.time()
+        print(f"{func.__name__} executed in {end_time - start_time:.4f} seconds")
+        return result
+    return wrapper
+
+[/INPUT]
+
+[RESPONSE]
+"""Decorator that measures the execution time of a function."""
+[/RESPONSE]
+
+
+[INPUT]
+@time_it
+async def fetch_data(url): 
+    if not url.startswith("http"):
+        raise ValueError("Invalid URL provided")
+    
+    await asyncio.sleep(1)  # Simulate an asynchronous network call
+    return f"Fetched data from {url}"
+[/INPUT]
+
+[RESPONSE]
+"""Asynchronously fetches data from a URL.
+
+    Args:
+        url (str): The URL from which to fetch data.
+
+    Returns:
+        str: The response data as a string.
+
+    Raises:
+        ValueError: If the URL is invalid.
+
+    Example:
+        >>> response = await fetch_data("https://jsonplaceholder.typicode.com/posts/1")
+        >>> print(response)
+    """
+[/RESPONSE]
+

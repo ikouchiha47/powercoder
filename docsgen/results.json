@@ -1,0 +1,137 @@
+[
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func Add(a int, b int) int {\n    return a + b\n}",
+        "output": "// Add adds two integers and returns the result.\n// Parameters:\n// - a: the first integer\n// - b: the second integer\n//\n// Returns:\n// - int: The sum of a and b\n//\n// Example:\n//     result := Add(3, 5)"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func IsEven(n int) bool {\n    return n%2 == 0\n}",
+        "output": "// IsEven checks if a number is even.\n// Parameters:\n// - n: the number to check\n//\n// Returns:\n// - bool: true if the number is even, false otherwise\n//\n// Example:\n//     isEven := IsEven(4) // true"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func FindMax(numbers []int) int {\n    max := numbers[0]\n    for _, num := range numbers {\n        if num > max {\n            max = num\n        }\n    }\n    return max\n}",
+        "output": "// FindMax finds the maximum number in a slice.\n// Parameters:\n// - numbers: a slice of integers\n//\n// Returns:\n// - int: The maximum number found\n//\n// Example:\n//     max := FindMax([]int{1, 2, 3, 4})"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func Factorial(n int) int {\n    if n < 0 {\n        panic(\"factorial not defined for negative numbers\")\n    }\n    if n == 0 {\n        return 1\n    }\n    result := 1\n    for i := 2; i <= n; i++ {\n        result *= i\n    }\n    return result\n}",
+        "output": "// Factorial calculates the factorial of a number.\n// Parameters:\n// - n: the number to calculate the factorial for\n//\n// Returns:\n// - int: The factorial of the number\n//\n// Example:\n//     result := Factorial(5)"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func MatrixMultiply(matrixA [][]int, matrixB [][]int) [][]int {\n    rowsA := len(matrixA)\n    colsA := len(matrixA[0])\n    rowsB := len(matrixB)\n    colsB := len(matrixB[0])\n    \n    if colsA != rowsB {\n        panic(\"incompatible matrix dimensions\")\n    }\n    \n    result := make([][]int, rowsA)\n    for i := range result {\n        result[i] = make([]int, colsB)\n    }\n    \n    for i := 0; i < rowsA; i++ {\n        for j := 0; j < colsB; j++ {\n            for k := 0; k < colsA; k++ {\n                result[i][j] += matrixA[i][k] * matrixB[k][j]\n            }\n        }\n    }\n    return result\n}",
+        "output": "// MatrixMultiply performs matrix multiplication.\n// Parameters:\n// - matrixA: the first matrix\n// - matrixB: the second matrix\n//\n// Returns:\n// - [][]int: The product of the two matrices\n//\n// Example:\n//     result := MatrixMultiply([][]int{{1, 2}, {3, 4}}, [][]int{{5, 6}, {7, 8}})"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func ConcurrentFetchData(urls []string) ([]Data, error) {\n    var wg sync.WaitGroup\n    dataChannel := make(chan Data)\n    errorChannel := make(chan error)\n\n    for _, url := range urls {\n        wg.Add(1)\n        go func(u string) {\n            defer wg.Done()\n            // Simulating data fetching\n            // data, err := fetchFromAPI(u)\n            // if err != nil {\n            //     errorChannel <- err\n            //     return\n            // }\n            dataChannel <- Data{} // Placeholder for actual data\n        }(url)\n    }\n\n    go func() {\n        wg.Wait()\n        close(dataChannel)\n    }()\n\n    var results []Data\n    for data := range dataChannel {\n        results = append(results, data)\n    }\n    return results, nil // Placeholder for actual error handling\n}",
+        "output": "// ConcurrentFetchData fetches data from multiple APIs concurrently.\n// Parameters:\n// - urls: a slice of API endpoints to fetch data from\n//\n// Returns:\n// - []Data: A slice containing data fetched from the APIs\n// - error: An error if any of the fetches fail\n//\n// Example:\n//     data, err := ConcurrentFetchData([]string{\"https://api1.com\", \"https://api2.com\"})"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func SortByField(items []Item, field string) []Item {\n    // Implement sorting logic based on field name\n    return items // Placeholder for actual sorting logic\n}",
+        "output": "// SortByField sorts a slice of structs by a specified field.\n// Parameters:\n// - items: the slice of structs to sort\n// - field: the field name to sort by\n//\n// Returns:\n// - []Item: The sorted slice\n//\n// Example:\n//     sortedItems := SortByField(items, \"Name\")"
+    },
+    {
+        "instruction": "Generate top level functions documentation summarizing the go code",
+        "input": "func CalculateTax(income float64) float64 {\n    taxRate := 0.2\n    return income * taxRate\n}",
+        "output": "// CalculateTax calculates the tax for a given income based on a fixed rate.\n// Parameters:\n// - income: the income amount\n//\n// Returns:\n// - float64: The calculated tax amount\n//\n// Example:\n//     tax := CalculateTax(50000) // 10000"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def add_numbers(a: int, b: int) -> int:\n    return a+b",
+        "output": "\"\"\"\n    Adds two integers and returns the result.\n    \n    Args:\n        a (int): The first integer.\n        b (int): The second integer.\n        \n    Returns:\n        int: The sum of a and b.\n        \n    Example:\n        >>> add_numbers(3, 5)\n        8\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def add(a, b):\n    return a + b",
+        "output": "\"\"\"Adds two numbers together.\n    \n    Args:\n        a (int): The first number.\n        b (int): The second number.\n        \n    Returns:\n        int: The sum of the two numbers.\n        \n    Example:\n        >>> add(3, 5)\n        8\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def is_even(n):\n    return n % 2 == 0",
+        "output": "\"\"\"Checks if a number is even.\n    \n    Args:\n        n (int): The number to check.\n        \n    Returns:\n        bool: True if the number is even, False otherwise.\n        \n    Example:\n        >>> is_even(4)\n        True\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def find_max(numbers):\n    return max(numbers)",
+        "output": "\"\"\"Finds the maximum number in a list.\n    \n    Args:\n        numbers (list): A list of numbers.\n        \n    Returns:\n        int: The maximum number found.\n        \n    Example:\n        >>> find_max([1, 2, 3, 4])\n        4\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def merge_lists(list1, list2):\n    return list1 + list2",
+        "output": "\"\"\"Merges two lists.\n    \n    Args:\n        list1 (list): The first list.\n        list2 (list): The second list.\n        \n    Returns:\n        list: A new list containing elements from both lists.\n        \n    Example:\n        >>> merge_lists([1, 2], [3, 4])\n        [1, 2, 3, 4]\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def factorial(n):\n    if n < 0:\n        raise ValueError(\"Factorial not defined for negative numbers\")\n    if n == 0:\n        return 1\n    result = 1\n    for i in range(2, n + 1):\n        result *= i\n    return result",
+        "output": "\"\"\"Calculates the factorial of a number.\n    \n    Args:\n        n (int): The number to calculate the factorial for.\n        \n    Returns:\n        int: The factorial of the number.\n        \n    Example:\n        >>> factorial(5)\n        120\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def bubble_sort(array):\n    n = len(array)\n    for i in range(n):\n        for j in range(0, n - i - 1):\n            if array[j] > array[j + 1]:\n                array[j], array[j + 1] = array[j + 1], array[j]\n    return array",
+        "output": "\"\"\"Implements a simple bubble sort algorithm.\n    \n    Args:\n        array (list): The list to be sorted.\n        \n    Returns:\n        list: The sorted list.\n        \n    Example:\n        >>> bubble_sort([5, 2, 9, 1])\n        [1, 2, 5, 9]\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def matrix_multiply(matrixA, matrixB):\n    rowsA = len(matrixA)\n    colsA = len(matrixA[0])\n    rowsB = len(matrixB)\n    colsB = len(matrixB[0])\n    \n    if colsA != rowsB:\n        raise ValueError(\"Incompatible matrix dimensions\")\n    \n    result = [[0] * colsB for _ in range(rowsA)]\n    for i in range(rowsA):\n        for j in range(colsB):\n            for k in range(colsA):\n                result[i][j] += matrixA[i][k] * matrixB[k][j]\n    return result",
+        "output": "\"\"\"Performs matrix multiplication.\n    \n    Args:\n        matrixA (list of list): The first matrix.\n        matrixB (list of list): The second matrix.\n        \n    Returns:\n        list of list: The product of the two matrices.\n        \n    Example:\n        >>> result = matrix_multiply([[1, 2], [3, 4]], [[5, 6], [7, 8]])\n        >>> result\n        [[19, 22], [43, 50]]\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "def time_it(func): \n    @wraps(func)\n    async def wrapper(*args, **kwargs):\n        start_time = time.time()\n        result = await func(*args, **kwargs)\n        end_time = time.time()\n        print(f\"{func.__name__} executed in {end_time - start_time:.4f} seconds\")\n        return result\n    return wrapper",
+        "output": "\"\"\"Decorator that measures the execution time of a function.\"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the python code",
+        "input": "@time_it\nasync def fetch_data(url): \n    if not url.startswith(\"http\"):\n        raise ValueError(\"Invalid URL provided\")\n    \n    await asyncio.sleep(1)  # Simulate an asynchronous network call\n    return f\"Fetched data from {url}\"",
+        "output": "\"\"\"Asynchronously fetches data from a URL.\n\n    Args:\n        url (str): The URL from which to fetch data.\n\n    Returns:\n        str: The response data as a string.\n\n    Raises:\n        ValueError: If the URL is invalid.\n\n    Example:\n        >>> response = await fetch_data(\"https://jsonplaceholder.typicode.com/posts/1\")\n        >>> print(response)\n    \"\"\""
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function add(a, b)\n    return a + b\nend",
+        "output": "--- Adds two numbers together.\n-- @param a number: The first number.\n-- @param b number: The second number.\n-- @return number: The sum of the two numbers.\n-- @example\n-- local result = add(3, 5) -- 8"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function is_even(n)\n    return n % 2 == 0\nend",
+        "output": "--- Checks if a number is even.\n-- @param n number: The number to check.\n-- @return boolean: True if the number is even, false otherwise.\n-- @example\n-- local isEven = is_even(4) -- true"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function find_max(numbers)\n    local max = numbers[1]\n    for i = 2, #numbers do\n        if numbers[i] > max then max = numbers[i] end\n    end\n    return max\nend",
+        "output": "--- Finds the maximum number in a list.\n-- @param numbers table: A table of numbers.\n-- @return number: The maximum number found.\n-- @example\n-- local max = find_max({1, 2, 3, 4}) -- 4"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function merge_tables(t1, t2)\n    local merged = {}\n    for _, v in ipairs(t1) do table.insert(merged, v) end\n    for _, v in ipairs(t2) do table.insert(merged, v) end\n    return merged\nend",
+        "output": "--- Merges two tables.\n-- @param t1 table: The first table.\n-- @param t2 table: The second table.\n-- @return table: A new table containing elements from both tables.\n-- @example\n-- local merged = merge_tables({1, 2}, {3, 4}) -- {1, 2, 3, 4}"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function factorial(n)\n    if n < 0 then error(\"Factorial not defined for negative numbers\") end\n    if n == 0 then return 1 end\n    local result = 1\n    for i = 2, n do result = result * i end\n    return result\nend",
+        "output": "--- Calculates the factorial of a number.\n-- @param n number: The number to calculate the factorial for.\n-- @return number: The factorial of the number.\n-- @example\n-- local result = factorial(5) -- 120"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function bubble_sort(array)\n    local n = #array\n    for i = 1, n do\n        for j = 1, n - i do\n            if array[j] > array[j + 1] then\n                array[j], array[j + 1] = array[j + 1], array[j]\n            end\n        end\n    end\n    return array\nend",
+        "output": "--- Implements a simple bubble sort algorithm.\n-- @param array table: The table to be sorted.\n-- @return table: The sorted table.\n-- @example\n-- local sorted = bubble_sort({5, 2, 9, 1}) -- {1, 2, 5, 9}"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function matrix_multiply(matrixA, matrixB)\n    local rowsA = #matrixA\n    local colsA = #matrixA[1]\n    local rowsB = #matrixB\n    local colsB = #matrixB[1]\n    \n    if colsA ~= rowsB then error(\"Incompatible matrix dimensions\") end\n    \n    local result = {}\n    for i = 1, rowsA do\n        result[i] = {}\n        for j = 1, colsB do\n            result[i][j] = 0\n            for k = 1, colsA do\n                result[i][j] = result[i][j] + matrixA[i][k] * matrixB[k][j]\n            end\n        end\n    end\n    return result\nend",
+        "output": "--- Performs matrix multiplication.\n-- @param matrixA table: The first matrix (table of tables).\n-- @param matrixB table: The second matrix (table of tables).\n-- @return table: The product of the two matrices.\n-- @example\n-- local result = matrix_multiply({{1, 2}, {3, 4}}, {{5, 6}, {7, 8}})"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the lua code",
+        "input": "function table_to_json(t)\n    local json = require(\"json\")  -- assuming a JSON library is available\n    return json.encode(t)\nend",
+        "output": "--- Serializes a Lua table into JSON format.\n-- @param t table: The table to serialize.\n-- @return string: A JSON string representation of the table.\n-- @example\n-- local jsonString = table_to_json({key = \"value\"}) -- '{\"key\":\"value\"}'"
+    },
+    {
+        "instruction": "Generate top level function documentation summarizing the js code",
+        "input": "function addNumbers(a, b) {\n    return a + b;\n}",
+        "output": "/**\n * Adds two numbers together.\n * @param {number} a - The first number.\n * @param {number} b - The second number.\n * @returns {number} The sum of the two numbers.\n * @example\n * addNumbers(3, 5); // 8\n */"
+    }
+]

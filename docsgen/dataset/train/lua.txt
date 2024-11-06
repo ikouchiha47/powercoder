@@ -1,0 +1,175 @@
+[INS]
+Generate top level function documentation summarizing the lua code
+[/INS]
+
+[INPUT]
+function add(a, b)
+    return a + b
+end
+
+[/INPUT]
+
+[RESPONSE]
+--- Adds two numbers together.
+-- @param a number: The first number.
+-- @param b number: The second number.
+-- @return number: The sum of the two numbers.
+-- @example
+-- local result = add(3, 5) -- 8
+
+[/RESPONSE]
+
+
+[INPUT]
+function is_even(n)
+    return n % 2 == 0
+end
+
+[/INPUT]
+
+[RESPONSE]
+--- Checks if a number is even.
+-- @param n number: The number to check.
+-- @return boolean: True if the number is even, false otherwise.
+-- @example
+-- local isEven = is_even(4) -- true
+
+[/RESPONSE]
+
+
+[INPUT]
+function find_max(numbers)
+    local max = numbers[1]
+    for i = 2, #numbers do
+        if numbers[i] > max then max = numbers[i] end
+    end
+    return max
+end
+[/INPUT]
+
+[RESPONSE]
+--- Finds the maximum number in a list.
+-- @param numbers table: A table of numbers.
+-- @return number: The maximum number found.
+-- @example
+-- local max = find_max({1, 2, 3, 4}) -- 4
+
+[/RESPONSE]
+
+
+[INPUT]
+function merge_tables(t1, t2)
+    local merged = {}
+    for _, v in ipairs(t1) do table.insert(merged, v) end
+    for _, v in ipairs(t2) do table.insert(merged, v) end
+    return merged
+end
+
+[/INPUT]
+
+[RESPONSE]
+--- Merges two tables.
+-- @param t1 table: The first table.
+-- @param t2 table: The second table.
+-- @return table: A new table containing elements from both tables.
+-- @example
+-- local merged = merge_tables({1, 2}, {3, 4}) -- {1, 2, 3, 4}
+
+[/RESPONSE]
+
+
+[INPUT]
+function factorial(n)
+    if n < 0 then error("Factorial not defined for negative numbers") end
+    if n == 0 then return 1 end
+    local result = 1
+    for i = 2, n do result = result * i end
+    return result
+end
+
+[/INPUT]
+
+[RESPONSE]
+--- Calculates the factorial of a number.
+-- @param n number: The number to calculate the factorial for.
+-- @return number: The factorial of the number.
+-- @example
+-- local result = factorial(5) -- 120
+
+[/RESPONSE]
+
+
+[INPUT]
+function bubble_sort(array)
+    local n = #array
+    for i = 1, n do
+        for j = 1, n - i do
+            if array[j] > array[j + 1] then
+                array[j], array[j + 1] = array[j + 1], array[j]
+            end
+        end
+    end
+    return array
+end
+
+
+[/INPUT]
+
+[RESPONSE]
+--- Implements a simple bubble sort algorithm.
+-- @param array table: The table to be sorted.
+-- @return table: The sorted table.
+-- @example
+-- local sorted = bubble_sort({5, 2, 9, 1}) -- {1, 2, 5, 9}
+
+[/RESPONSE]
+
+[INPUT]
+function matrix_multiply(matrixA, matrixB)
+    local rowsA = #matrixA
+    local colsA = #matrixA[1]
+    local rowsB = #matrixB
+    local colsB = #matrixB[1]
+    
+    if colsA ~= rowsB then error("Incompatible matrix dimensions") end
+    
+    local result = {}
+    for i = 1, rowsA do
+        result[i] = {}
+        for j = 1, colsB do
+            result[i][j] = 0
+            for k = 1, colsA do
+                result[i][j] = result[i][j] + matrixA[i][k] * matrixB[k][j]
+            end
+        end
+    end
+    return result
+end
+[/INPUT]
+
+[RESPONSE]
+--- Performs matrix multiplication.
+-- @param matrixA table: The first matrix (table of tables).
+-- @param matrixB table: The second matrix (table of tables).
+-- @return table: The product of the two matrices.
+-- @example
+-- local result = matrix_multiply({{1, 2}, {3, 4}}, {{5, 6}, {7, 8}})
+
+[/RESPONSE]
+
+[INPUT]
+function table_to_json(t)
+    local json = require("json")  -- assuming a JSON library is available
+    return json.encode(t)
+end
+
+[/INPUT]
+
+[RESPONSE]
+--- Serializes a Lua table into JSON format.
+-- @param t table: The table to serialize.
+-- @return string: A JSON string representation of the table.
+-- @example
+-- local jsonString = table_to_json({key = "value"}) -- '{"key":"value"}'
+
+[/RESPONSE]

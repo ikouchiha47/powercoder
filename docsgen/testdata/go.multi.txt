@@ -1,0 +1,207 @@
+[INS]
+Generate top level functions documentation summarizing the go code
+[/INS]
+
+[INPUT]
+func Add(a int, b int) int {
+    return a + b
+}
+[/INPUT]
+
+[RESPONSE]
+// Add adds two integers and returns the result.
+// Parameters:
+// - a: the first integer
+// - b: the second integer
+//
+// Returns:
+// - int: The sum of a and b
+//
+// Example:
+//     result := Add(3, 5)
+
+[/RESPONSE]
+
+[INPUT]
+func IsEven(n int) bool {
+    return n%2 == 0
+}
+[/INPUT]
+
+[RESPONSE]
+// IsEven checks if a number is even.
+// Parameters:
+// - n: the number to check
+//
+// Returns:
+// - bool: true if the number is even, false otherwise
+//
+// Example:
+//     isEven := IsEven(4) // true
+
+[/RESPONSE]
+
+
+[INPUT]
+func FindMax(numbers []int) int {
+    max := numbers[0]
+    for _, num := range numbers {
+        if num > max {
+            max = num
+        }
+    }
+    return max
+}
+[/INPUT]
+
+[RESPONSE]
+// FindMax finds the maximum number in a slice.
+// Parameters:
+// - numbers: a slice of integers
+//
+// Returns:
+// - int: The maximum number found
+//
+// Example:
+//     max := FindMax([]int{1, 2, 3, 4})
+
+[/RESPONSE]
+
+[INPUT]
+func Factorial(n int) int {
+    if n < 0 {
+        panic("factorial not defined for negative numbers")
+    }
+    if n == 0 {
+        return 1
+    }
+    result := 1
+    for i := 2; i <= n; i++ {
+        result *= i
+    }
+    return result
+}
+[/INPUT]
+
+[RESPONSE]
+// Factorial calculates the factorial of a number.
+// Parameters:
+// - n: the number to calculate the factorial for
+//
+// Returns:
+// - int: The factorial of the number
+//
+// Example:
+//     result := Factorial(5) 
+
+[/RESPONSE]
+
+[INPUT]
+func MatrixMultiply(matrixA [][]int, matrixB [][]int) [][]int {
+    rowsA := len(matrixA)
+    colsA := len(matrixA[0])
+    rowsB := len(matrixB)
+    colsB := len(matrixB[0])
+    
+    if colsA != rowsB {
+        panic("incompatible matrix dimensions")
+    }
+    
+    result := make([][]int, rowsA)
+    for i := range result {
+        result[i] = make([]int, colsB)
+    }
+    
+    for i := 0; i < rowsA; i++ {
+        for j := 0; j < colsB; j++ {
+            for k := 0; k < colsA; k++ {
+                result[i][j] += matrixA[i][k] * matrixB[k][j]
+            }
+        }
+    }
+    return result
+}
+[/INPUT]
+
+[RESPONSE]
+// MatrixMultiply performs matrix multiplication.
+// Parameters:
+// - matrixA: the first matrix
+// - matrixB: the second matrix
+//
+// Returns:
+// - [][]int: The product of the two matrices
+//
+// Example:
+//     result := MatrixMultiply([][]int{{1, 2}, {3, 4}}, [][]int{{5, 6}, {7, 8}})
+
+[/RESPONSE]
+
+[INPUT]
+func ConcurrentFetchData(urls []string) ([]Data, error) {
+    var wg sync.WaitGroup
+    dataChannel := make(chan Data)
+    errorChannel := make(chan error)
+
+    for _, url := range urls {
+        wg.Add(1)
+        go func(u string) {
+            defer wg.Done()
+            // Simulating data fetching
+            // data, err := fetchFromAPI(u)
+            // if err != nil {
+            //     errorChannel <- err
+            //     return
+            // }
+            dataChannel <- Data{} // Placeholder for actual data
+        }(url)
+    }
+
+    go func() {
+        wg.Wait()
+        close(dataChannel)
+    }()
+
+    var results []Data
+    for data := range dataChannel {
+        results = append(results, data)
+    }
+    return results, nil // Placeholder for actual error handling
+}
+[/INPUT]
+
+[RESPONSE]
+// ConcurrentFetchData fetches data from multiple APIs concurrently.
+// Parameters:
+// - urls: a slice of API endpoints to fetch data from
+//
+// Returns:
+// - []Data: A slice containing data fetched from the APIs
+// - error: An error if any of the fetches fail
+//
+// Example:
+//     data, err := ConcurrentFetchData([]string{"https://api1.com", "https://api2.com"})
+[/RESPONSE]
+
+
+[INPUT]
+func SortByField(items []Item, field string) []Item {
+    // Implement sorting logic based on field name
+    return items // Placeholder for actual sorting logic
+}
+[/INPUT]
+
+[RESPONSE]
+// SortByField sorts a slice of structs by a specified field.
+// Parameters:
+// - items: the slice of structs to sort
+// - field: the field name to sort by
+//
+// Returns:
+// - []Item: The sorted slice
+//
+// Example:
+//     sortedItems := SortByField(items, "Name")
+
+[/RESPONSE]
+

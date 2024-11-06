@@ -1,0 +1,60 @@
+[INS]
+Generate top level function documentation summarizing the lua code
+[/INS]
+
+[INPUT]
+function next_permute(elements)
+    local n = #elements
+    if n == 0 then
+        return {}, {}
+    end
+
+    local copied = {}
+    for i = 1, n do
+        copied[i] = elements[i]
+    end
+
+    -- Step 1
+    local k = n - 1
+    while k >= 1 and copied[k] >= copied[k + 1] do
+        k = k - 1
+    end
+
+    if k < 1 then
+        return false, copied
+    end
+
+    -- Step 2
+    local l = n
+    while l >= 1 and copied[k] >= copied[l] do
+        l = l - 1
+    end
+
+    copied[k], copied[l] = copied[l], copied[k]
+
+    -- Step 3
+    local reversedPart = {}
+    for i = n, k + 1, -1 do
+        table.insert(reversedPart, copied[i])
+    end
+    for i = k + 1, n do
+        copied[i] = reversedPart[i - k]
+    end
+
+    return true, copied
+end[/INPUT]
+
+[RESPONSE]
+--- Generates the next lexicographical permutation of the provided elements.
+-- @param elements table: A table (array) of elements that can be compared.
+-- @return table: The table containing the next permutation. 
+-- If no further permutation exists, the original table is returned in sorted order.
+-- @example
+-- local elements = {1, 2, 3}
+-- local found, permutation = next_permute(elements)
+-- if found then
+--     print(table.concat(permutation, ", ")) -- Output: 1, 3, 2
+-- else
+--     print("No next permutation exists.")
+-- end
+[/RESPONSE]

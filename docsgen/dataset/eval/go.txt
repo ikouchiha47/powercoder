@@ -1,0 +1,62 @@
+[INS]
+Generate top level function documentation summarizing the go code
+[/INS]
+
+[INPUT]
+func NextPermute[E cmp.Ordered](elements []E) (bool, []E) {
+        n := len(elements)
+        if n == 0 {
+                return true, []E{}
+        }
+
+        copied := make([]E, n)
+
+        copy(copied, elements)
+
+        // Step 1
+        k := n - 2
+        for k >= 0 && copied[k] >= copied[k+1] {
+                k -= 1
+        }
+
+        if k < 0 {
+                return false, copied
+        }
+
+        // Step 2
+        l := n - 1
+        for l >= 0 && copied[k] >= copied[l] {
+                l -= 1
+        }
+
+        copied[k], copied[l] = copied[l], copied[k]
+
+        // Step 3
+        reversedPart := Reverse(copied[k+1:])
+        copied = append(copied[:k+1], reversedPart...)
+
+        return true, copied
+}
+[/INPUT]
+
+[RESPONSE]
+// NextPermute generates the next lexicographical permutation of the provided elements.
+// 
+// Parameters:
+// - elements: A slice of elements of any ordered type that supports comparison.
+// 
+// Returns:
+// - bool: Indicates whether the next permutation was found. 
+// - []E: The slice containing the next permutation. If no further permutation exists,
+//         the original slice is returned in sorted order.
+//
+// Example:
+//     elements := []int{1, 2, 3}
+//     found, permuted := NextPermute(elements)
+//     if found {
+//         fmt.Println(permuted) // Output: [1 3 2]
+//     } else {
+//         fmt.Println("No next permutation exists.")
+//     }
+[/RESPONSE]
+
