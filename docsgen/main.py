@@ -6,7 +6,7 @@ from transformers import (
     AutoTokenizer,
     TrainingArguments,
 )
-from trl import SFTTrainer
+from trl import SFTTrainer, SFTConfig
 from peft import LoraConfig, get_peft_model
 from datasets import load_dataset
 
@@ -51,7 +51,7 @@ test_dir = os.path.abspath("./dataset/eval/")
 test_file = os.path.abspath("./results.json")
 
 prepare_json_data(data_dir, test_file)
-eval_dataset = load_dataset("json", data_files=test_file)
+test_dataset = load_dataset("json", data_files=test_file)
 
 # Define the model
 if train_config["bf16"]:
@@ -81,6 +81,7 @@ lora_config = LoraConfig(
 # Wrap the model with LoRA
 model = get_peft_model(model, lora_config)
 
+
 # Training arguments
 training_args = TrainingArguments(
     output_dir=f"{train_config['out_dir']}/logs",
@@ -91,7 +92,7 @@ training_args = TrainingArguments(
     per_device_eval_batch_size=train_config["batch_size"],
     logging_strategy="epoch",
     save_strategy="epoch",
-    metric_for_best_model="epoch",
+    metric_for_best_model="eval_train_samples_per_second",
     num_train_epochs=train_config["epochs"],
     save_total_limit=2,
     # bf16=train_config["bf16"],
@@ -108,7 +109,7 @@ training_args = TrainingArguments(
 trainer = SFTTrainer(
     model=model,
     train_dataset=train_dataset,
-    eval_dataset=eval_dataset,
+    eval_dataset=test_dataset,
     max_seq_length=train_config["context_length"],
     tokenizer=tokenizer,
     args=training_args,
@@ -121,4 +122,4 @@ trainer.train()
 
 # Save the model and tokenizer
 model.save_pretrained(train_config["out_dir"])
-tokenizer.save_pretrained(train_config["out_dir"])
+# tokenizer.save_pretrained(train_config["out_dir"])
