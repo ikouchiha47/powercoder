@@ -36,10 +36,10 @@ local function display_result(result)
   end)
 end
 
-local function create_result_buffer()
+local function create_result_buffer(language)
   vim.cmd 'new'
   local buf = vim.api.nvim_get_current_buf()
-  vim.bo[buf].filetype = vim.bo.filetype -- Set the filetype to match the original buffer
+  vim.bo[buf].filetype = language -- vim.bo.filetype -- Set the filetype to match the original buffer
   vim.bo[buf].buftype = 'nofile'
   return buf
 end
@@ -56,27 +56,51 @@ local function append_to_result_buffer(buf, text)
     table.remove(lines)
 
     if #lines > 0 then
-      vim.api.nvim_buf_set_option(buf, 'modifiable', true)
-      -- Append complete lines to the buffer
-      vim.api.nvim_buf_set_lines(buf, -1, -1, false, lines)
-      vim.api.nvim_buf_set_option(buf, 'modifiable', false)
-      -- Move cursor to the end of the buffer
-      local last_line = vim.api.nvim_buf_line_count(buf)
-      vim.api.nvim_win_set_cursor(0, { last_line, 0 })
+      if vim.api.nvim_buf_is_valid(buf) and vim.api.nvim_buf_is_loaded(buf) then
+        vim.api.nvim_buf_set_option(buf, 'modifiable', true)
+        vim.api.nvim_buf_set_lines(buf, -1, -1, false, lines)
+        vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+
+        -- Move cursor to end only if the buffer is actually shown in the current window
+        if vim.api.nvim_get_current_buf() == buf then
+          local last_line = vim.api.nvim_buf_line_count(buf)
+          if last_line < 1 then
+            last_line = 1
+          end
+          pcall(vim.api.nvim_win_set_cursor, 0, { last_line, 0 })
+        end
+      end
     end
+
+    -- if #lines > 0 then
+    --   vim.api.nvim_buf_set_option(buf, 'modifiable', true)
+    --   -- Append complete lines to the buffer
+    --   vim.api.nvim_buf_set_lines(buf, -1, -1, false, lines)
+    --   vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+    --   -- Move cursor to the end of the buffer
+    --   local last_line = vim.api.nvim_buf_line_count(buf)
+    --   vim.api.nvim_win_set_cursor(0, { last_line, 0 })
+    -- end
   end)
 end
 
 M.prompt = {
   test_prompt = function(language)
     return string.format(
-      'Write tests for the %s code. There should be atleast one test case of success and failure. Add more test cases as required for each branching, for full code covergae. Only output the test codes and nothing else.',
+      'Write tests for the %s code. '
+        .. 'There should be at least one test case of success and failure. '
+        .. 'Break down the test cases into smaller blocks. Use table tests if required. '
+        .. 'Add more test cases as required for each branching, for full code coverage. '
+        .. 'Only output the test code and nothing else. '
+        .. 'Write no more than 20 test cases at max. If there can be more, stop and say there can be more.',
       language
     )
   end,
   refactor_prompt = function(language)
     return string.format(
-      'Refactor the %s code. Refactor should include but not limited to: improving time complexity, better design principle. code locality, single responsibilty. If a refactor is not needed, do not unnecesarily refactor the code',
+      'Refactor the %s code. '
+        .. 'Refactor should include but not limited to: improving time complexity, better design principle. code locality, single responsibilty. '
+        .. 'If a refactor is not needed, do not unnecesarily refactor the code',
       language
     )
   end,
@@ -91,11 +115,11 @@ M.prompt = {
 
 local function kill_process(handle, pid)
   if handle then
-    uv.process_kill(handle, 'sigterm')
+    uv.process_kill(handle, 'sigkill')
     handle:close()
   end
   if pid then
-    uv.kill(pid, 'sigterm')
+    uv.kill(pid, 'sigkill')
   end
 end
 
@@ -170,7 +194,7 @@ local function run_ollama_async(content, filetype, run_type)
   -- local result = ''
   local error_msg = ''
 
-  local result_buf = create_result_buffer()
+  local result_buf = create_result_buffer(filetype)
   local timeout_timer = uv.new_timer()
 
   local function cleanup()
@@ -201,14 +225,14 @@ local function run_ollama_async(content, filetype, run_type)
 
   local function on_stdout(err, chunk)
     assert(not err, err)
-    if chunk then
+    if chunk and M.current_handle then
       append_to_result_buffer(result_buf, chunk)
     end
   end
 
   local function on_stderr(err, chunk)
     assert(not err, err)
-    if chunk then
+    if chunk and M.current_handle then
       error_msg = error_msg .. chunk
     end
   end
@@ -228,8 +252,8 @@ local function run_ollama_async(content, filetype, run_type)
     cmd = string.format("echo '%s' | ollama run docs-builder '%s'", content, prompt)
   end
 
-  print(content)
-  print(prompt)
+  -- print(content)
+  -- print(prompt)
 
   handle, pid = uv.spawn('sh', {
     args = { '-c', cmd },
@@ -243,7 +267,7 @@ local function run_ollama_async(content, filetype, run_type)
   M.current_pid = pid
 
   -- Set up a timeout
-  timeout_timer:start(300000, 0, function() -- 5 minutes timeout
+  timeout_timer:start(150000, 0, function() -- 5 minutes timeout
     vim.schedule(function()
       vim.api.nvim_echo({ { 'Generation timed out', 'WarningMsg' } }, false, {})
     end)
@@ -378,7 +402,7 @@ end
 return {
   'nvim-lua/plenary.nvim',
   config = function()
-    vim.api.nvim_create_user_command('GenerateTests', function(params)
+    vim.api.nvim_create_user_command('GenTests', function(params)
       M.generate_tests(params.range)
     end, { range = true })
 
@@ -390,6 +414,6 @@ return {
       M.generate_docs(params.range)
     end, { range = true })
 
-    vim.api.nvim_create_user_command('CancelGeneration', M.cancel_generation, {})
+    vim.api.nvim_create_user_command('CancelGen', M.cancel_generation, {})
   end,
 }
